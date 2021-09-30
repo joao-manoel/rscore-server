@@ -1,4 +1,5 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
+import { MessageMiddleware } from 'src/middleware/message.middleware';
 import { MessagesController } from './messages.controller';
 import { MessagesService } from './messages.service';
 
@@ -7,4 +8,9 @@ import { MessagesService } from './messages.service';
   controllers: [MessagesController],
   providers: [MessagesService],
 })
-export class MessagesModule {}
+export class MessagesModule{
+
+  configure(consumer: MiddlewareConsumer){
+    consumer.apply(MessageMiddleware).forRoutes('messages')
+  }
+}
