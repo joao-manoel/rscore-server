@@ -23,7 +23,16 @@ export class MessagesService {
   findById(id: number){
     return this.messages.find(message => message.id === id);
   }
+
   create(message: Message){
     return this.messages.push(message);
+  }
+
+  update(id: number, message: Message){
+    const index = this.messages.findIndex((message) => message.id === id);
+    console.log(index)
+    this.messages[index] = message;
+
+    return message;
   }
 }
