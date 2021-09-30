@@ -29,11 +29,13 @@ export class MessagesController {
   update(@Param() params, @Body() messageDto: MessageDto){
     return this.messagesService.update(+params.id, messageDto).catch((e) => {
       throw new NotFoundException(e.message);
-    });;
+    });
   }
 
   @Delete(':id')
   delete(@Param() params){
-    return this.messagesService.delete(+params.id);
+    return this.messagesService.delete(+params.id).catch((e) => {
+      throw new NotFoundException(e.message);
+    });
   }
 }

@@ -18,11 +18,11 @@ export class MessagesService {
   ];
 
   findAll(): Message[] {
-    return this.messages;
+    return this.messages.filter(Boolean);
   }
 
   async findById(id: number): Promise<Message> {
-    const message = this.messages.find((msg: Message) => msg.id === id);
+    const message = this.messages.find((msg: Message) => msg?.id === id);
 
     if(!message){
       throw Error(`Mensagem com o id ${id} não encontrado.`);
@@ -46,7 +46,7 @@ export class MessagesService {
   }
 
   async update(id: number, messageDto: MessageDto): Promise<Message> {
-    const index = this.messages.findIndex((message: Message) => message.id === id);
+    const index = this.messages.findIndex((msg: Message) => msg?.id === id);
 
     if(index < 0){
       throw Error(`Mensagem com o id ${id} não encontrado.`);
@@ -62,8 +62,12 @@ export class MessagesService {
     return message;
   }
 
-  delete(id: number): void {
-    const index = this.messages.findIndex((message: Message) => message.id === id);
+  async delete(id: number): Promise<void> {
+    const index = this.messages.findIndex((msg: Message) => msg?.id === id);
+
+    if(index < 0){
+      throw Error(`Mensagem com o id ${id} não encontrado.`);
+    }
 
     delete this.messages[index];
   }
