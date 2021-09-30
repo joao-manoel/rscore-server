@@ -31,30 +31,39 @@ export class MessagesService {
     return message;
   }
 
-  create(messageDto: MessageDto){
+  create(messageDto: MessageDto): Message {
     const id = this.messages.length + 1;
 
     const message: Message = {
       id,
       ...messageDto,
     };
-    
+
     this.messages.push(message);
 
 
     return message;
   }
 
-  update(id: number, message: Message): Message {
-    const index = this.messages.findIndex((message) => message.id === id);
-    console.log(index)
+  async update(id: number, messageDto: MessageDto): Promise<Message> {
+    const index = this.messages.findIndex((message: Message) => message.id === id);
+
+    if(index < 0){
+      throw Error(`Mensagem com o id ${id} não encontrado.`);
+    }
+    
+    const message: Message = {
+      id,
+      ...messageDto,
+    };
+
     this.messages[index] = message;
 
     return message;
   }
 
   delete(id: number): void {
-    const index = this.messages.findIndex((message) => message.id === id);
+    const index = this.messages.findIndex((message: Message) => message.id === id);
 
     delete this.messages[index];
   }
