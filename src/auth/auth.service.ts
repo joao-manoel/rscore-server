@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { compareSync } from 'bcrypt';
+import { User } from 'src/user/entities/user.entity';
 
 import { UserService } from './../user/user.service';
 
@@ -16,7 +17,22 @@ export class AuthService {
 
     return {
       token: this.jwtService.sign(payload),
+      email: user.email,
+      roles: user.roles,
     };
+  }
+
+  async session(user) {
+    try {
+      const _user = await this.userService.findOne(user.id);
+
+      return {
+        email: _user.email,
+        roles: _user.roles,
+      };
+    } catch (error) {
+      return null;
+    }
   }
 
   async validateUser(email: string, password: string) {
