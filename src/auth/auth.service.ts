@@ -8,6 +8,7 @@ import { RefreshTokenService } from './../refresh-token/refresh-token.service';
 type User = {
   id: string;
   email: string;
+  name: string;
   roles: string[];
 };
 
@@ -29,6 +30,7 @@ export class AuthService {
     return {
       token: this.jwtService.sign(payload),
       refreshToken: refreshToken.id,
+      name: user.name,
       email: user.email,
       roles: user.roles,
     };
