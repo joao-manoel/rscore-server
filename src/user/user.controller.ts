@@ -35,7 +35,7 @@ export class UserController {
   @Get(':id')
   async findOne(@Param('id') id: string) {
     try {
-      return await this.userService.findOne(+id);
+      return await this.userService.findOne(id);
     } catch (e) {
       throw new NotFoundException(e.message);
     }
@@ -43,12 +43,12 @@ export class UserController {
 
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return await this.userService.update(+id, updateUserDto);
+    return await this.userService.update(id, updateUserDto);
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async remove(@Param('id') id: string) {
-    return await this.userService.remove(+id);
+    return await this.userService.remove(id);
   }
 }

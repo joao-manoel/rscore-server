@@ -33,7 +33,7 @@ export class UserService {
     return users;
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     const user = await this.prisma.user.findFirst({
       where: { id },
       include: this._include,
@@ -59,8 +59,8 @@ export class UserService {
     }
   }
 
-  async update(id: number, data: UpdateUserDto) {
-    const user = await this.prisma.user.update({
+  async update(id: string, data: UpdateUserDto) {
+    await this.prisma.user.update({
       where: { id },
       data,
       include: this._include,
@@ -69,7 +69,7 @@ export class UserService {
     return true;
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     const user = await this.prisma.user.delete({
       where: { id },
     });

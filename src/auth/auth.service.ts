@@ -1,28 +1,40 @@
-import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { Injectable } from '@nestjs/common';
 import { compareSync } from 'bcrypt';
-import { User } from 'src/user/entities/user.entity';
 
 import { UserService } from './../user/user.service';
+import { RefreshTokenService } from './../refresh-token/refresh-token.service';
+
+type User = {
+  id: string;
+  email: string;
+  roles: string[];
+};
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userService: UserService,
+    private readonly refreshTokenService: RefreshTokenService,
     private readonly jwtService: JwtService,
   ) {}
 
-  login(user) {
+  async login(user: User) {
     const payload = { sub: user.id, email: user.email, roles: user.roles };
+
+    const refreshToken = await this.refreshTokenService.GenerateRefreshToken(
+      user.id,
+    );
 
     return {
       token: this.jwtService.sign(payload),
+      refreshToken: refreshToken.id,
       email: user.email,
       roles: user.roles,
     };
   }
 
-  async session(user) {
+  async session(user: User) {
     try {
       const _user = await this.userService.findOne(user.id);
 
@@ -36,7 +48,7 @@ export class AuthService {
   }
 
   async validateUser(email: string, password: string) {
-    let user;
+    let user: any;
 
     try {
       user = await this.userService.findOneByEmail(email);

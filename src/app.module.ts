@@ -7,6 +7,7 @@ import { UserModule } from './user/user.module';
 import { RoleModule } from './role/role.module';
 import { PermissionModule } from './permission/permission.module';
 import { AuthModule } from './auth/auth.module';
+import { RefreshTokenModule } from './refresh-token/refresh-token.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { AuthModule } from './auth/auth.module';
     RoleModule,
     PermissionModule,
     AuthModule,
+    RefreshTokenModule,
   ],
   controllers: [AppController],
   providers: [AppService],
