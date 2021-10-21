@@ -9,13 +9,13 @@ export class AuthController {
 
   @UseGuards(AuthGuard('local'))
   @Post('login')
-  login(@Req() req: any) {
-    return this.authService.login(req.user);
+  async login(@Req() req: any) {
+    return await this.authService.login(req.user);
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Get('session')
   async session(@Req() req: any) {
-    return this.authService.session(req.user);
+    return await this.authService.session(req.user);
   }
 }

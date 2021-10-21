@@ -50,17 +50,15 @@ export class AuthService {
   }
 
   async validateUser(email: string, password: string) {
-    let user: any;
+    const user = await this.userService.findOneByEmail(email);
 
-    try {
-      user = await this.userService.findOneByEmail(email);
-    } catch (error) {
-      return null;
+    if (user) {
+      const isPasswordValid = compareSync(password, user.password);
+      if (!isPasswordValid) return null;
+
+      return user;
     }
 
-    const isPasswordValid = compareSync(password, user.password);
-    if (!isPasswordValid) return null;
-
-    return user;
+    return null;
   }
 }
